@@ -24,6 +24,26 @@ btns.splice(4,(btns.length - 4)); // i only want the 4 first ones
 
 for(let i = 0; i < btns.length; i++){
     btns[i].onclick = ((e) => {
+        let sectionTitle = document.getElementById("page-title");
+        let sectionSubTitle = document.getElementById("page-subtitle");
         switchScreen(i);
+        switch(i){
+            case 0:
+                sectionTitle.innerHTML = "Statistics";
+                sectionSubTitle.innerHTML = "Overview of your events";
+                break;
+            case 1:
+                sectionTitle.innerHTML = "Add event";
+                sectionSubTitle.innerHTML = "Add event like you want";
+                break;
+            case 2:
+                sectionTitle.innerHTML = "Events";
+                sectionSubTitle.innerHTML = "List of events";
+                break;
+            case 3:
+                sectionTitle.innerHTML = "Archive";
+                sectionSubTitle.innerHTML = "List of events you deleted in the past";
+                break;
+        }
     })
 }
