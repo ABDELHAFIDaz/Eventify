@@ -1,7 +1,10 @@
+// Data storing
+let events = [];
+let archive = [];
 // stats variables
-let totalEvents = 0;
-let totalSeats = 0;
-let totalRevenue = 0;
+let totalEvents = events.length;
+let totalSeats = events.reduce((sum, e) => sum + e.seats, 0);
+let totalRevenue = events.reduce((sum,e) => sum + e.price * e.seats, 0);
 
 let sections = document.querySelectorAll("section");
 let btns = Array.from(document.querySelectorAll("button")); // from node list to an array
@@ -46,18 +49,18 @@ for(let i = 0; i < btns.length; i++){
                 break;
         }
         if(i == 0)
-            stats();
+            renderStats();
     })
 }
 
 // ======= stats ==========
 
-function stats(){
+function renderStats(){
     let statEvents = document.getElementById("stat-total-events");
     let statSeats = document.getElementById("stat-total-seats");
     let statPrice = document.getElementById("stat-total-price");
     statEvents.innerHTML = `${totalEvents}`;
     statSeats.innerHTML = `${totalSeats}`;
-    statPrice.innerHTML = `${totalRevenue}`;
+    statPrice.innerHTML = `$${totalRevenue}`;
 }
-stats();
+renderStats();
