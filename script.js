@@ -45,5 +45,19 @@ for(let i = 0; i < btns.length; i++){
                 sectionSubTitle.innerHTML = "List of events you deleted in the past";
                 break;
         }
+        if(i == 0)
+            stats();
     })
 }
+
+// ======= stats ==========
+
+function stats(){
+    let statEvents = document.getElementById("stat-total-events");
+    let statSeats = document.getElementById("stat-total-seats");
+    let statPrice = document.getElementById("stat-total-price");
+    statEvents.innerHTML = `${totalEvents}`;
+    statSeats.innerHTML = `${totalSeats}`;
+    statPrice.innerHTML = `${totalRevenue}`;
+}
+stats();
