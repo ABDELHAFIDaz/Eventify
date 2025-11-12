@@ -57,6 +57,7 @@ for (let i = 0; i < btns.length; i++) {
                 sectionTitle.innerHTML = "Events";
                 sectionSubTitle.innerHTML = "List of events";
                 deleteEvent();
+                detailsEvent();
                 break;
             case 3: // archive
                 sectionTitle.innerHTML = "Archive";
@@ -185,6 +186,7 @@ function moveToEvents() {
     // adding the variants in the events array
     for (let i = 0; i < maxVariant; i++) {
         events[events.length - 1].variants.push({
+            id : i + 1,
             name: document.querySelectorAll(".variant-row__name")[i].value,
             qty: document.querySelectorAll(".variant-row__qty")[i].value,
             value: document.querySelectorAll(".variant-row__value")[i].value
@@ -218,13 +220,43 @@ function deleteEvent() {
     document.querySelectorAll(".events-h-list").forEach(e => {
         let deleteBtn = e.lastElementChild.lastElementChild;
         deleteBtn.addEventListener('click', () => {
-            let idToDelete = deleteBtn.parentElement.parentElement.firstElementChild.innerHTML;
+            let idToDelete = e.firstElementChild.innerHTML;
             console.log(idToDelete);
             for (let i = 0; i < events.length; i++) {
                 if (idToDelete == events[i].id)
                     archive.push(events.splice(i, 1));
             }
-            deleteBtn.parentElement.parentElement.outerHTML = "";
+            e.outerHTML = "";
+        })
+    })
+}
+
+// ================== details =======================
+
+function detailsEvent() {
+    document.querySelectorAll(".events-h-list").forEach(e => {
+        let detailBtn = e.lastElementChild.firstElementChild;
+        detailBtn.addEventListener('click', () => {
+            let idForDetails = e.firstElementChild.innerHTML;
+            console.log(idForDetails);
+            for (let i = 0; i < events.length; i++) {
+                if (idForDetails == events[i].id){
+                    document.getElementById("event-modal").classList.remove("is-hidden");
+                    document.getElementById("modal-body").innerHTML = `
+                                    <h3>Title:  ${events[i].title}</h3>
+                                    <br>
+                                    <p>Id:  ${events[i].id}</p>
+                                    <br>
+                                    <p>Description:  ${events[i].description}</p>
+                                    <br>
+                                    <p>Seats:   ${events[i].seats}</p>
+                                    <br>
+                                    <p>Price:   $${events[i].price}</p>
+                                    <br>
+                                    <p>Variants:    ${events[i].variants.length}</p>`;
+                    document.querySelector(".modal__close").addEventListener('click', () => document.getElementById("event-modal").classList.add("is-hidden"));
+                }
+            }
         })
     })
 }
