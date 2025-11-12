@@ -6,7 +6,7 @@ let ID = 1;
 // =========== 10 events for testing ==================
 for (let i = 0; i < 10; i++) {
     events.push({
-        id : ID++,
+        id: ID++,
         title: `Event ${i + 1}`,
         imageUrl: `https://example.png`,
         description: `this is the description of event ${i + 1}`,
@@ -44,20 +44,21 @@ for (let i = 0; i < btns.length; i++) {
         let sectionSubTitle = document.getElementById("page-subtitle");
         switchScreen(i);
         switch (i) {
-            case 0:
+            case 0: // stats
                 sectionTitle.innerHTML = "Statistics";
                 sectionSubTitle.innerHTML = "Overview of your events";
                 renderStats();
                 break;
-            case 1:
+            case 1: // add event
                 sectionTitle.innerHTML = "Add event";
                 sectionSubTitle.innerHTML = "Add event like you want";
                 break;
-            case 2:
+            case 2: // event list
                 sectionTitle.innerHTML = "Events";
                 sectionSubTitle.innerHTML = "List of events";
+                deleteEvent();
                 break;
-            case 3:
+            case 3: // archive
                 sectionTitle.innerHTML = "Archive";
                 sectionSubTitle.innerHTML = "List of events you deleted in the past";
                 break;
@@ -112,7 +113,7 @@ function handlFormSubmit(e) {
     let variantsNames = document.querySelectorAll(".variant-row__name");
 
     variantsNames.forEach(ele => {
-        if(!titleRegex.test(ele.value.trim())){
+        if (!titleRegex.test(ele.value.trim())) {
             isValid = false;
             ele.classList.add("one-err");
         }
@@ -129,7 +130,7 @@ function handlFormSubmit(e) {
         if (confirmed) {
             moveToEvents(); // store the event in the events array
             document.getElementById('event-form').reset(); // resets the form
-            maxVariant = 0; 
+            maxVariant = 0;
             document.getElementById('variants-list').innerHTML = ''; // to remove old variants
         }
     }
@@ -163,7 +164,7 @@ document.getElementById("btn-add-variant").addEventListener('click', (e) => {
 })
 
 // removing the variants
-function removeVariant(target){
+function removeVariant(target) {
     // target.closest(".variant-row").outerHTML = '';
     target.parentElement.outerHTML = '';
     console.log(target.parentElement);
@@ -173,7 +174,7 @@ function removeVariant(target){
 // pushing event to the events array
 function moveToEvents() {
     events.push({
-        id : ID++,
+        id: ID++,
         title: document.getElementById('event-title').value,
         imageUrl: document.getElementById('event-image').value,
         description: document.getElementById('event-description').value,
@@ -182,11 +183,11 @@ function moveToEvents() {
         variants: []
     })
     // adding the variants in the events array
-    for(let i = 0; i < maxVariant; i++){        
+    for (let i = 0; i < maxVariant; i++) {
         events[events.length - 1].variants.push({
-            name : document.querySelectorAll(".variant-row__name")[i].value,
-            qty : document.querySelectorAll(".variant-row__qty")[i].value,
-            value : document.querySelectorAll(".variant-row__value")[i].value
+            name: document.querySelectorAll(".variant-row__name")[i].value,
+            qty: document.querySelectorAll(".variant-row__qty")[i].value,
+            value: document.querySelectorAll(".variant-row__value")[i].value
         })
     }
     // each time we add an event, the event displays in the event list
@@ -195,9 +196,9 @@ function moveToEvents() {
 
 // =========== events list ==========
 
-function displayEvents(event){
-        document.querySelector(".table__body").innerHTML += `
-        <tr class="table__row" data-event-id="1">
+function displayEvents(event) {
+    document.querySelector(".table__body").innerHTML += `
+        <tr class="table__row events-h-list" data-event-id="1">
                                     <td>${event.id}</td>
                                     <td>${event.title}</td>
                                     <td>${event.seats}</td>
@@ -211,4 +212,19 @@ function displayEvents(event){
                                 </tr>`
 }
 
+// ================ Delelte events ===================
 
+function deleteEvent() {
+    document.querySelectorAll(".events-h-list").forEach(e => {
+        let deleteBtn = e.lastElementChild.lastElementChild;
+        deleteBtn.addEventListener('click', () => {
+            let idToDelete = deleteBtn.parentElement.parentElement.firstElementChild.innerHTML;
+            console.log(idToDelete);
+            for (let i = 0; i < events.length; i++) {
+                if (idToDelete == events[i].id)
+                    archive.push(events.splice(i, 1));
+            }
+            deleteBtn.parentElement.parentElement.outerHTML = "";
+        })
+    })
+}
