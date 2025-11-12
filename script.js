@@ -2,6 +2,23 @@
 let events = [];
 let archive = [];
 
+let ID = 1;
+// =========== 10 events for testing ==================
+for (let i = 0; i < 10; i++) {
+    events.push({
+        id : ID++,
+        title: `Event ${i + 1}`,
+        imageUrl: `https://example.png`,
+        description: `this is the description of event ${i + 1}`,
+        seats: i * i + 1,
+        price: i * 10 + 1,
+        variants: []
+    })
+    displayEvents(events[i]);
+}
+renderStats();
+// ===================================================
+
 let sections = document.querySelectorAll("section");
 let btns = Array.from(document.querySelectorAll("button")); // from node list to an array
 
@@ -146,14 +163,17 @@ document.getElementById("btn-add-variant").addEventListener('click', (e) => {
 })
 
 // removing the variants
-function removeVariant(a){
-    a.closest(".variant-row").outerHTML = '';
+function removeVariant(target){
+    // target.closest(".variant-row").outerHTML = '';
+    target.parentElement.outerHTML = '';
+    console.log(target.parentElement);
     maxVariant--;
 }
 
 // pushing event to the events array
 function moveToEvents() {
     events.push({
+        id : ID++,
         title: document.getElementById('event-title').value,
         imageUrl: document.getElementById('event-image').value,
         description: document.getElementById('event-description').value,
@@ -169,5 +189,26 @@ function moveToEvents() {
             value : document.querySelectorAll(".variant-row__value")[i].value
         })
     }
-    console.log(events);
+    // each time we add an event, the event displays in the event list
+    displayEvents(events[events.length - 1]);
 }
+
+// =========== events list ==========
+
+function displayEvents(event){
+        document.querySelector(".table__body").innerHTML += `
+        <tr class="table__row" data-event-id="1">
+                                    <td>${event.id}</td>
+                                    <td>${event.title}</td>
+                                    <td>${event.seats}</td>
+                                    <td>$${event.price}</td>
+                                    <td><span class="badge">${event.variants.length}</span></td>
+                                    <td>
+                                        <button class="btn btn--small" data-action="details" data-event-id="1">Details</button>
+                                        <button class="btn btn--small" data-action="edit" data-event-id="1">Edit</button>
+                                        <button class="btn btn--danger btn--small" data-action="archive" data-event-id="1">Delete</button>
+                                    </td>
+                                </tr>`
+}
+
+
