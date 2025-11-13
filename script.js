@@ -426,8 +426,6 @@ function editEvent() {
 
 let sortSelect = document.getElementById("sort-events");
 sortSelect.addEventListener('change', (e) => {
-    // e.preventDefault();
-    console.log("sort: ", sortSelect.value);
     document.querySelector(".table__body").innerHTML = "";
     switch (sortSelect.value) {
         case "title-asc": // a-z
@@ -445,17 +443,17 @@ sortSelect.addEventListener('change', (e) => {
         case "seats-asc": // low to high
             sortLowToHigh("seats");
             break;
-    
+
         default:
             break;
     }
 })
 
-function sortHighToLow(keyName){ //high to low
+function sortHighToLow(keyName) { //high to low
     let temp = 0;
-    for(let i = 0; i < events.length; i++){
-        for(let j = 0; j < events.length - i - 1; j++){
-            if(events[j][keyName] > events[j + 1][keyName]){
+    for (let i = 0; i < events.length; i++) {
+        for (let j = 0; j < events.length - i - 1; j++) {
+            if (events[j][keyName] > events[j + 1][keyName]) {
                 temp = events[j];
                 events[j] = events[j + 1];
                 events[j + 1] = temp;
@@ -463,12 +461,15 @@ function sortHighToLow(keyName){ //high to low
         }
         displayEvent(events[events.length - i - 1]);
     }
+    deleteEvent();
+    detailsEvent();
+    editEvent();
 }
-function sortLowToHigh(keyName){ // low to high
+function sortLowToHigh(keyName) { // low to high
     let temp = 0;
-    for(let i = 0; i < events.length; i++){
-        for(let j = 0; j < events.length - i - 1; j++){
-            if(events[j][keyName] < events[j + 1][keyName]){
+    for (let i = 0; i < events.length; i++) {
+        for (let j = 0; j < events.length - i - 1; j++) {
+            if (events[j][keyName] < events[j + 1][keyName]) {
                 temp = events[j];
                 events[j] = events[j + 1];
                 events[j + 1] = temp;
@@ -476,4 +477,28 @@ function sortLowToHigh(keyName){ // low to high
         }
         displayEvent(events[events.length - i - 1]);
     }
+    deleteEvent();
+    detailsEvent();
+    editEvent();
 }
+
+// =================== searching =========================
+
+let searchBar = document.getElementById('search-events');
+searchBar.addEventListener('input', (e) => {
+    document.querySelector(".table__body").innerHTML = "";
+    let pureSearch = searchBar.value.trim();
+    console.log(pureSearch);
+    if (pureSearch != "") {
+        events.forEach((event) => {
+            if (event.title.includes(pureSearch))
+                displayEvent(event);
+        })
+    }
+    else {
+        events.forEach(evnt => displayEvent(evnt));
+    }
+    deleteEvent();
+    detailsEvent();
+    editEvent();
+})
