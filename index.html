@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Events Management App</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
     <div class="app">
@@ -180,7 +181,7 @@
                             <!-- Submit Button -->
                             <div class="form__actions">
                                 <button type="submit" class="btn btn--primary">Create Event</button>
-                                <button type="reset" class="btn btn--ghost">Clear</button>
+                                <button class="btn btn--ghost" id="clear-btn">Clear</button>
                             </div>
                         </form>
                     </div>
@@ -292,6 +293,9 @@
             </div>
         </div>
     </div>
+
+    <!-- edit form -->
+    <div id="form--2" class="modall is-hidden"></div>
 
     <!-- SAMPLE DATA (for reference) -->
     <!-- 
