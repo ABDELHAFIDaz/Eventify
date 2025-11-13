@@ -63,6 +63,8 @@ for (let i = 0; i < btns.length; i++) {
             case 3: // archive
                 sectionTitle.innerHTML = "Archive";
                 sectionSubTitle.innerHTML = "List of events you deleted in the past";
+                displayArchivedEvents();
+                restoreEvent();
                 break;
         }
     })
@@ -234,11 +236,17 @@ function deleteEvent() {
         let deleteBtn = e.lastElementChild.lastElementChild;
         deleteBtn.addEventListener('click', () => {
             let idToDelete = e.firstElementChild.innerHTML;
-            console.log(idToDelete);
+            console.log("id danra: ", idToDelete);
             for (let i = 0; i < events.length; i++) {
-                if (idToDelete == events[i].id)
-                    archive.push(events.splice(i, 1));
+                if (idToDelete == events[i].id){
+                    let toArchive = events.splice(i,1);
+                    let toArchivee = toArchive[0];
+                    archive.push(toArchivee);
+                    break;
+                }
             }
+            console.log(events);
+            console.log(archive);
             e.outerHTML = "";
         })
     })
@@ -502,3 +510,50 @@ searchBar.addEventListener('input', (e) => {
     detailsEvent();
     editEvent();
 })
+
+// =============== archive ==============
+
+function displayArchivedEvents(){
+    let archiveList = document.querySelectorAll(".table__body")[1];
+    archiveList.innerHTML = "";
+    console.log(archiveList);
+    console.log(archive);
+    archive.forEach((event) => {
+        console.log(event);
+        console.log(event.title);
+        archiveList.innerHTML += `
+        <tr class="table__row archive-h-event" data-event-id="1">
+                                    <td>${event.id}</td>
+                                    <td>${event.title}</td>
+                                    <td>${event.seats}</td>
+                                    <td>${event.price}</td>
+                                    <td>
+                                        <button class="btn btn--small" data-action="restore" data-event-id="1">Restore</button>
+                                    </td>
+                                </tr>`;
+        console.log("end of each event");
+    })
+}
+
+function restoreEvent() {
+    document.querySelectorAll(".archive-h-event").forEach(e => {
+        let restoreBtn = e.lastElementChild.firstElementChild;
+        // console.log("restore btn: ", restoreBtn);
+        restoreBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            let idToRestore = e.firstElementChild.innerHTML;
+            // console.log(idToRestore);
+            for (let i = 0; i < archive.length; i++) {
+                if (idToRestore == archive[i].id){
+                    let toEvents = archive.splice(i,1);
+                    let toEventss = toEvents[0];
+                    events.push(toEventss);
+                    console.log("after retore: ", events, "aarchive: ", archive);
+                    displayEvent(events[events.length - 1]);
+                }
+            }
+            e.outerHTML = "";
+            // console.log(archive);
+        })
+    })
+}
