@@ -614,6 +614,21 @@ textarea.input {
   justify-content: center;
   z-index: var(--z-modal);
 }
+.modall {
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgb(123, 109, 109);
+  position: fixed;
+  top: 10%;
+  left: 35%;
+  width: 30%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+}
 
 .modal.is-hidden {
   display: none;
