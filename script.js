@@ -14,7 +14,7 @@ for (let i = 0; i < 10; i++) {
         price: i * 10 + 1,
         variants: []
     })
-    displayEvents(events[i]);
+    displayEvent(events[i]);
 }
 renderStats();
 // ===================================================
@@ -206,12 +206,12 @@ function moveToEvents() {
         })
     }
     // each time we add an event, the event displays in the event list
-    displayEvents(events[events.length - 1]);
+    displayEvent(events[events.length - 1]);
 }
 
 // =========== events list ==========
 
-function displayEvents(event) {
+function displayEvent(event) {
     document.querySelector(".table__body").innerHTML += `
         <tr class="table__row events-h-list" data-event-id="1">
                                     <td>${event.id}</td>
@@ -401,7 +401,7 @@ function editEvent() {
                                 events[i].price = document.getElementById('event-price2').value;
                                 console.log(events);
                                 document.querySelector(".table__body").innerHTML = "";
-                                events.forEach(evnt => displayEvents(evnt));
+                                events.forEach(evnt => displayEvent(evnt));
                                 editEvent();
                                 deleteEvent();
                                 detailsEvent();
@@ -420,4 +420,60 @@ function editEvent() {
             console.log("end of the edit function");
         })
     })
+}
+
+// ================== Sorting ==============================
+
+let sortSelect = document.getElementById("sort-events");
+sortSelect.addEventListener('change', (e) => {
+    // e.preventDefault();
+    console.log("sort: ", sortSelect.value);
+    document.querySelector(".table__body").innerHTML = "";
+    switch (sortSelect.value) {
+        case "title-asc": // a-z
+            sortLowToHigh("title");
+            break;
+        case "title-desc": // z-a
+            sortHighToLow("title");
+            break;
+        case "price-asc": // low to high
+            sortLowToHigh("price");
+            break;
+        case "price-desc": // high to low
+            sortHighToLow("price");
+            break;
+        case "seats-asc": // low to high
+            sortLowToHigh("seats");
+            break;
+    
+        default:
+            break;
+    }
+})
+
+function sortHighToLow(keyName){ //high to low
+    let temp = 0;
+    for(let i = 0; i < events.length; i++){
+        for(let j = 0; j < events.length - i - 1; j++){
+            if(events[j][keyName] > events[j + 1][keyName]){
+                temp = events[j];
+                events[j] = events[j + 1];
+                events[j + 1] = temp;
+            }
+        }
+        displayEvent(events[events.length - i - 1]);
+    }
+}
+function sortLowToHigh(keyName){ // low to high
+    let temp = 0;
+    for(let i = 0; i < events.length; i++){
+        for(let j = 0; j < events.length - i - 1; j++){
+            if(events[j][keyName] < events[j + 1][keyName]){
+                temp = events[j];
+                events[j] = events[j + 1];
+                events[j + 1] = temp;
+            }
+        }
+        displayEvent(events[events.length - i - 1]);
+    }
 }
